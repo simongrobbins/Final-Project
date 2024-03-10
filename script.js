@@ -31,7 +31,7 @@ function renderNotes() {
 
     notes.forEach(function(note, index) {
 
-        let noteElement = document.createElement('div');
+        let noteElement = document.createElement('form');
         noteElement.className = 'note';
         noteElement.style.backgroundColor = note.color;
 
@@ -44,6 +44,7 @@ function renderNotes() {
         titleInput.placeholder = 'Enter title...';
         titleInput.addEventListener('change', function() {
             note.title = titleInput.value; 
+            updateNote(index, note);
         });
         noteHeader.appendChild(titleInput);
 
@@ -77,6 +78,11 @@ function renderNotes() {
         textArea.addEventListener('click', function() {
             textArea.readOnly = false;
         });
+        
+        textArea.addEventListener('change', function() {
+            note.text = textArea.value; 
+            updateNote(index, note);
+        });
 
         noteElement.appendChild(noteHeader);
         noteElement.appendChild(textArea);
@@ -85,11 +91,17 @@ function renderNotes() {
     });
 }
 
+
 function deleteNote(index) {
     if (confirm('Are you sure you want to delete this note?')) {
         notes.splice(index, 1);
         renderNotes(); 
     }
+}
+
+function updateNote(index, updatedNote) {
+    notes[index] = updatedNote;
+    renderNotes();
 }
 
 renderNotes();
